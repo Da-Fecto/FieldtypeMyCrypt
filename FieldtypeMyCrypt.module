@@ -1,0 +1,73 @@
+<?php
+
+/**
+ * Fieldtype MyCrypt
+ * Fieldtype for storing Mcrypt encrypted values.
+ *
+ * Encryption methode used from http://php.net/manual/en/function.mcrypt-encrypt.php#78531
+ * Thanks dylan!
+ *
+ * @author Martijn Geerts
+ *
+ * ProcessWire 2.x
+ * Copyright (C) 2011 by Ryan Cramer
+ * Licensed under GNU/GPL v2, see LICENSE.TXT
+ *
+ * http://www.processwire.com
+ * http://www.ryancramer.com
+ *
+ */
+class FieldtypeMyCrypt extends FieldtypeText {
+
+	public static function getModuleInfo() {
+		return array(
+			'title' => 'Fieldtype MyCrypt',
+			'summary' => __('Fieldtype for storing Mcrypt encrypted values.'),
+			'installs' => 'InputfieldMyCrypt',
+			'requires' => array('PHP>=5.4.0', 'ProcessWire>=2.5.28'),
+			'version' => '0.0.1',
+			'author' => 'Martijn Geerts',
+			'icon' => 'lock',
+			);
+	}
+
+    private $key;
+    private $iv;
+
+    private function encrypt($value) {
+        return base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, $this->key, $value, MCRYPT_MODE_ECB, $this->iv));
+    }
+
+    private function decrypt($value) {
+        return trim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, $this->key, base64_decode($value), MCRYPT_MODE_ECB, $this->iv));
+    }
+
+    public function __construct() {
+        $this->key = hash('sha256', $this->config->userAuthSalt, TRUE);
+        $this->iv = mcrypt_create_iv(32);
+    }
+
+	public function ___getCompatibleFieldtypes(Field $field) {
+		return null;
+	}
+
+	public function ___wakeupValue(Page $page, Field $field, $value) {
+		return $this->decrypt($value);
+	}
+
+	public function ___sleepValue(Page $page, Field $field, $value) {
+		return $this->encrypt($value);
+	}
+
+	public function getInputfield(Page $page, Field $field) {
+		$inputfield = $this->modules->get('InputfieldMyCrypt');
+		$inputfield->class = $this->className();
+		return $inputfield;
+	}
+
+	public function getDatabaseSchema(Field $field) {
+		$schema = parent::getDatabaseSchema($field);
+		$schema['data'] = "varchar(255) NOT NULL default ''";
+		return $schema;
+	}
+}
