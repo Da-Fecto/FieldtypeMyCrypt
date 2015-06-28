@@ -19,17 +19,17 @@
  */
 class FieldtypeMyCrypt extends FieldtypeText {
 
-	public static function getModuleInfo() {
-		return array(
-			'title' => 'Fieldtype MyCrypt',
-			'summary' => __('Fieldtype for storing Mcrypt encrypted values.'),
-			'installs' => 'InputfieldMyCrypt',
-			'requires' => array('PHP>=5.4.0', 'ProcessWire>=2.5.28'),
-			'version' => '0.0.1',
-			'author' => 'Martijn Geerts',
-			'icon' => 'lock',
-			);
-	}
+    public static function getModuleInfo() {
+        return array(
+            'title' => 'Fieldtype MyCrypt',
+            'summary' => __('Fieldtype for storing Mcrypt encrypted values.'),
+            'installs' => 'InputfieldMyCrypt',
+            'requires' => array('PHP>=5.4.0', 'ProcessWire>=2.5.28'),
+            'version' => '0.0.1',
+            'author' => 'Martijn Geerts',
+            'icon' => 'lock',
+            );
+    }
 
     private $key;
     private $iv;
@@ -47,27 +47,27 @@ class FieldtypeMyCrypt extends FieldtypeText {
         $this->iv = mcrypt_create_iv(32);
     }
 
-	public function ___getCompatibleFieldtypes(Field $field) {
-		return null;
-	}
+    public function ___getCompatibleFieldtypes(Field $field) {
+        return null;
+    }
 
-	public function ___wakeupValue(Page $page, Field $field, $value) {
-		return $this->decrypt($value);
-	}
+    public function ___wakeupValue(Page $page, Field $field, $value) {
+        return $this->decrypt($value);
+    }
 
-	public function ___sleepValue(Page $page, Field $field, $value) {
-		return $this->encrypt($value);
-	}
+    public function ___sleepValue(Page $page, Field $field, $value) {
+        return $this->encrypt($value);
+    }
 
-	public function getInputfield(Page $page, Field $field) {
-		$inputfield = $this->modules->get('InputfieldMyCrypt');
-		$inputfield->class = $this->className();
-		return $inputfield;
-	}
+    public function getInputfield(Page $page, Field $field) {
+        $inputfield = $this->modules->get('InputfieldMyCrypt');
+        $inputfield->class = $this->className();
+        return $inputfield;
+    }
 
-	public function getDatabaseSchema(Field $field) {
-		$schema = parent::getDatabaseSchema($field);
-		$schema['data'] = "varchar(255) NOT NULL default ''";
-		return $schema;
-	}
+    public function getDatabaseSchema(Field $field) {
+        $schema = parent::getDatabaseSchema($field);
+        $schema['data'] = "varchar(255) NOT NULL default ''";
+        return $schema;
+    }
 }
