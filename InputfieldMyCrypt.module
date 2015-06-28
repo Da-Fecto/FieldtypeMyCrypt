@@ -1,0 +1,38 @@
+<?php
+
+/**
+ * Inputfield MyCrypt
+ * Inputfield for sensitive string data.
+ *
+ * @author Martijn Geerts
+ *
+ * ProcessWire 2.x
+ * Copyright (C) 2011 by Ryan Cramer
+ * Licensed under GNU/GPL v2, see LICENSE.TXT
+ *
+ * http://www.processwire.com
+ * http://www.ryancramer.com
+ *
+ */
+class InputfieldMyCrypt extends InputfieldText {
+
+	public static function getModuleInfo() {
+		return array(
+			'title' => __('Inputfield MyCrypt'), // Module Title
+			'summary' => __('Inputfield for sensitive (string) values.'), // Module Summary
+			'requires' => array('PHP>=5.4.0', 'ProcessWire>=2.5.28', 'FieldtypeMyCrypt'),
+            'author' => 'Martijn Geerts',
+			'version' => '0.0.1',
+			'icon' => 'unlock',
+			);
+	}
+
+	public function __construct() {
+	    parent::__construct();
+	}
+
+	public function ___render() {
+	    $this->set('type', 'password');
+		return parent::___render();
+	}
+}
