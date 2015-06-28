@@ -35,4 +35,13 @@ class InputfieldMyCrypt extends InputfieldText {
 	    $this->set('type', 'password');
 		return parent::___render();
 	}
+
+    public function ___getConfigInputfields() {
+        $inputfields = parent::___getConfigInputfields();
+
+        $f = $inputfields->get('stripTags');
+        if($f) $inputfields->remove($f);
+
+        return $inputfields;
+    }
 }
