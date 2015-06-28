@@ -16,25 +16,25 @@
  */
 class InputfieldMyCrypt extends InputfieldText {
 
-	public static function getModuleInfo() {
-		return array(
-			'title' => __('Inputfield MyCrypt'), // Module Title
-			'summary' => __('Inputfield for sensitive (string) values.'), // Module Summary
-			'requires' => array('PHP>=5.4.0', 'ProcessWire>=2.5.28', 'FieldtypeMyCrypt'),
+    public static function getModuleInfo() {
+        return array(
+            'title' => __('Inputfield MyCrypt'), // Module Title
+            'summary' => __('Inputfield for sensitive (string) values.'), // Module Summary
+            'requires' => array('PHP>=5.4.0', 'ProcessWire>=2.5.28', 'FieldtypeMyCrypt'),
             'author' => 'Martijn Geerts',
-			'version' => '0.0.1',
-			'icon' => 'unlock',
-			);
-	}
+            'version' => '0.0.1',
+            'icon' => 'unlock',
+            );
+    }
 
-	public function __construct() {
-	    parent::__construct();
-	}
+    public function __construct() {
+        parent::__construct();
+    }
 
-	public function ___render() {
-	    $this->set('type', 'password');
-		return parent::___render();
-	}
+    public function ___render() {
+        $this->set('type', 'password');
+        return parent::___render();
+    }
 
     public function ___getConfigInputfields() {
         $inputfields = parent::___getConfigInputfields();
