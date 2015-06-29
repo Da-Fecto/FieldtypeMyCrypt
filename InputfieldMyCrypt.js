@@ -15,29 +15,23 @@ $(function () {
     }
 
     // Initialize
-    $('.FieldtypeMyCrypt').on('focus', function (event) {
-        Inputfield = event.target || event.srcElement;
-        milliseconds = 2500;
+    $('.FieldtypeMyCrypt').on('focus focusout keydown click select', function (event) {
+
+        if (event.type === 'focus') {
+            Inputfield = event.target || event.srcElement;
+            milliseconds = 2500;
+        } else if (event.type === 'focusout') {
+            milliseconds = 0;
+        } else if (event.type === 'keydown') {
+            milliseconds = 1500;
+        } else if (event.type === 'click') {
+            milliseconds = 2500;
+        } else if (event.type === 'select') {
+            milliseconds = 86400000;
+        }
+
         Inputfield.type = 'text';
         deFocus();
     });
 
-    // Manual blur
-    $('.FieldtypeMyCrypt').on('focusout', function () {
-        milliseconds = 0;
-        deFocus();
-    });
-
-    // User interaction with the Inputfield
-    $('.FieldtypeMyCrypt').on('keydown click', function (event) {
-        Inputfield.type = 'text';
-        milliseconds = (event.type === 'click') ? 2500 : 1500;
-        deFocus();
-    });
-
-    // Text selected, don't blur the input (for a day).
-    $('.FieldtypeMyCrypt').on('select', function () {
-        milliseconds = 86400000;
-        deFocus();
-    });
 });
