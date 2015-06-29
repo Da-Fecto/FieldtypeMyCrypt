@@ -14,7 +14,6 @@ $(function () {
         }, milliseconds);
     }
 
-    // Initialize
     $('.FieldtypeMyCrypt').on('focus focusout keydown click select', function (event) {
 
         if (event.type === 'focus') {
